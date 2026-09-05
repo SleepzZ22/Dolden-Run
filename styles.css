@@ -1,0 +1,62 @@
+/* Custom Styles for GOLDEN RUN (Black & Gold Theme) */
+
+/* Scrollbar Customization */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+::-webkit-scrollbar-track {
+    background: #09090c;
+}
+::-webkit-scrollbar-thumb {
+    background: #29251c;
+    border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #d4af37;
+}
+
+/* Province hover and highlight effects */
+.province-path {
+    transition: all 0.25s ease-in-out;
+}
+.province-path:hover {
+    fill: #d4af37 !important;
+    filter: drop-shadow(0 0 8px rgba(212, 175, 55, 0.7));
+}
+
+.province-path.active-province {
+    fill: #d4af37 !important;
+    filter: drop-shadow(0 0 10px rgba(212, 175, 55, 0.9));
+}
+
+/* Event Poster Image container */
+.poster-container {
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    position: relative;
+}
+
+.poster-container img {
+    transition: transform 0.4s ease;
+}
+
+.event-card:hover .poster-container img {
+    transform: scale(1.05);
+}
+
+/* Card Hover animation */
+.event-card {
+    transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.event-card:hover {
+    border-color: #d4af37;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px -5px rgba(212, 175, 55, 0.2);
+}
+
+/* Tab button transition */
+.tab-btn {
+    transition: all 0.2s ease;
+}
