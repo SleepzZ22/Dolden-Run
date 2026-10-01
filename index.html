@@ -398,6 +398,43 @@
                 </div>
             </div>
 
+            <!-- Distance Filter & Search Bar -->
+            <div class="bg-cardBg border border-cardBorder rounded-xl p-3 flex flex-col md:flex-row md:items-center justify-between gap-3 shadow-md">
+                <!-- Distance Filter Buttons -->
+                <div class="flex items-center gap-1.5 overflow-x-auto pb-1 md:pb-0 text-xs" id="distanceFilterContainer">
+                    <button data-distance="all" class="distance-filter-btn active px-3.5 py-1.5 rounded-lg font-bold bg-gradient-to-r from-brandGoldLight via-brandGold to-brandGoldDark text-darkBg shadow-md shadow-brandGold/20 transition flex items-center gap-1.5">
+                        <i class="fa-solid fa-list-check"></i>
+                        <span>ทุกระยะทาง</span>
+                    </button>
+                    <button data-distance="5" class="distance-filter-btn px-3 py-1.5 rounded-lg font-medium text-textMuted bg-[#16161d] hover:text-brandGold hover:border-brandGold/40 border border-cardBorder transition flex items-center gap-1.5">
+                        <i class="fa-solid fa-person-running text-brandGold"></i>
+                        <span>Fun Run (3-5 KM)</span>
+                    </button>
+                    <button data-distance="10" class="distance-filter-btn px-3 py-1.5 rounded-lg font-medium text-textMuted bg-[#16161d] hover:text-brandGold hover:border-brandGold/40 border border-cardBorder transition flex items-center gap-1.5">
+                        <i class="fa-solid fa-medal text-brandGold"></i>
+                        <span>Mini (10-10.5 KM)</span>
+                    </button>
+                    <button data-distance="21" class="distance-filter-btn px-3 py-1.5 rounded-lg font-medium text-textMuted bg-[#16161d] hover:text-brandGold hover:border-brandGold/40 border border-cardBorder transition flex items-center gap-1.5">
+                        <i class="fa-solid fa-trophy text-brandGold"></i>
+                        <span>Half (21 KM)</span>
+                    </button>
+                    <button data-distance="42" class="distance-filter-btn px-3 py-1.5 rounded-lg font-medium text-textMuted bg-[#16161d] hover:text-brandGold hover:border-brandGold/40 border border-cardBorder transition flex items-center gap-1.5">
+                        <i class="fa-solid fa-crown text-brandGold"></i>
+                        <span>Marathon (42 KM)</span>
+                    </button>
+                </div>
+
+                <!-- In-page Search Box -->
+                <div class="relative w-full md:w-64">
+                    <input type="text" id="calendarSearchInput" placeholder="ค้นหาชื่องาน, สถานที่, อำเภอ..." 
+                        class="w-full bg-[#16161d] border border-cardBorder rounded-lg py-1.5 pl-8 pr-8 text-xs text-textLight placeholder-textMuted focus:outline-none focus:border-brandGold focus:ring-1 focus:ring-brandGold/40 transition">
+                    <i class="fa-solid fa-magnifying-glass text-textMuted text-xs absolute left-2.5 top-1/2 -translate-y-1/2"></i>
+                    <button id="clearSearchBtn" class="hidden absolute right-2.5 top-1/2 -translate-y-1/2 text-textMuted hover:text-brandGold text-xs">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+            </div>
+
             <!-- 2-Column Content Area -->
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
                 
@@ -486,6 +523,143 @@
             </div>
         </div>
     </footer>
+
+    <!-- Event Details Modal -->
+    <div id="eventDetailModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-3 sm:p-4 md:p-6 overflow-y-auto">
+        <!-- Backdrop Blur -->
+        <div id="modalBackdrop" class="fixed inset-0 bg-black/80 backdrop-blur-sm transition-opacity"></div>
+
+        <!-- Modal Box -->
+        <div class="relative bg-cardBg border border-cardBorder rounded-2xl max-w-2xl w-full shadow-2xl overflow-hidden z-10 my-auto text-left transform transition-all duration-300 scale-95 opacity-0" id="modalContent">
+            
+            <!-- Close Button -->
+            <button id="closeModalBtn" class="absolute top-4 right-4 z-20 w-8 h-8 rounded-full bg-[#09090c]/80 border border-cardBorder text-textMuted hover:text-white hover:border-brandGold flex items-center justify-center transition" title="ปิด">
+                <i class="fa-solid fa-xmark text-sm"></i>
+            </button>
+
+            <!-- Modal Header Image / Banner -->
+            <div class="relative h-48 sm:h-60 w-full overflow-hidden bg-[#09090c]">
+                <img id="modalImg" src="" alt="ภาพงานวิ่ง" class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-gradient-to-t from-cardBg via-cardBg/40 to-transparent"></div>
+                <div class="absolute top-4 left-4">
+                    <span id="modalBadge" class="bg-gradient-to-r from-brandGold via-brandGold to-brandGoldDark text-darkBg text-xs font-black px-3 py-1 rounded-full shadow-md">
+                        มินิมาราธอน
+                    </span>
+                </div>
+                <div class="absolute bottom-3 left-4 right-4 space-y-1">
+                    <h3 id="modalTitle" class="text-xl sm:text-2xl font-extrabold text-white leading-snug drop-shadow-md">
+                        ชื่องานวิ่ง
+                    </h3>
+                </div>
+            </div>
+
+            <!-- Modal Body Details -->
+            <div class="p-5 sm:p-6 space-y-5 max-h-[60vh] overflow-y-auto">
+                <!-- Meta Info Grid -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs bg-[#16161d] p-3.5 rounded-xl border border-cardBorder">
+                    <div class="flex items-center gap-2.5 text-textLight">
+                        <i class="fa-regular fa-calendar text-brandGold text-sm w-4"></i>
+                        <div>
+                            <p class="text-textMuted text-[10px]">วันจัดกิจกรรม</p>
+                            <p id="modalDate" class="font-semibold">25 ตุลาคม 2569</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2.5 text-textLight">
+                        <i class="fa-solid fa-location-dot text-brandGold text-sm w-4"></i>
+                        <div>
+                            <p class="text-textMuted text-[10px]">สถานที่จัดงาน</p>
+                            <p id="modalLocation" class="font-semibold line-clamp-1">องค์พระปฐมเจดีย์ จ.นครปฐม</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2.5 text-textLight">
+                        <i class="fa-solid fa-user-shield text-brandGold text-sm w-4"></i>
+                        <div>
+                            <p class="text-textMuted text-[10px]">ผู้จัดงาน</p>
+                            <p id="modalOrganizer" class="font-semibold">สมาคมกีฬาจังหวัดนครปฐม</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2.5 text-textLight">
+                        <i class="fa-solid fa-clock text-brandGold text-sm w-4"></i>
+                        <div>
+                            <p class="text-textMuted text-[10px]">เวลาปล่อยตัว</p>
+                            <p id="modalStartTime" class="font-semibold">05:00 น. เป็นต้นไป</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Description -->
+                <div class="space-y-1.5">
+                    <h4 class="text-xs font-bold text-brandGold uppercase tracking-wider flex items-center gap-1.5">
+                        <i class="fa-solid fa-circle-info"></i>
+                        <span>รายละเอียดกิจกรรม</span>
+                    </h4>
+                    <p id="modalDescription" class="text-xs text-textMuted leading-relaxed">
+                        คำอธิบายกิจกรรม
+                    </p>
+                </div>
+
+                <!-- Distance Categories Table -->
+                <div class="space-y-2">
+                    <h4 class="text-xs font-bold text-brandGold uppercase tracking-wider flex items-center gap-1.5">
+                        <i class="fa-solid fa-person-running"></i>
+                        <span>ระยะทางและค่าสมัคร</span>
+                    </h4>
+                    <div id="modalDistancesContainer" class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+
+                <!-- What Runners Get -->
+                <div class="space-y-2">
+                    <h4 class="text-xs font-bold text-brandGold uppercase tracking-wider flex items-center gap-1.5">
+                        <i class="fa-solid fa-gift"></i>
+                        <span>สิ่งที่ผู้สมัครจะได้รับ</span>
+                    </h4>
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-[11px] text-textMuted">
+                        <div class="bg-[#16161d] p-2.5 rounded-lg border border-cardBorder text-center space-y-1">
+                            <i class="fa-solid fa-shirt text-brandGold text-base"></i>
+                            <p class="text-textLight font-medium">เสื้อที่ระลึก</p>
+                        </div>
+                        <div class="bg-[#16161d] p-2.5 rounded-lg border border-cardBorder text-center space-y-1">
+                            <i class="fa-solid fa-medal text-brandGold text-base"></i>
+                            <p class="text-textLight font-medium">เหรียญรางวัล</p>
+                        </div>
+                        <div class="bg-[#16161d] p-2.5 rounded-lg border border-cardBorder text-center space-y-1">
+                            <i class="fa-solid fa-ticket text-brandGold text-base"></i>
+                            <p class="text-textLight font-medium">BIB & ชิปเวลา</p>
+                        </div>
+                        <div class="bg-[#16161d] p-2.5 rounded-lg border border-cardBorder text-center space-y-1">
+                            <i class="fa-solid fa-utensils text-brandGold text-base"></i>
+                            <p class="text-textLight font-medium">อาหารและน้ำดื่ม</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal Footer Controls -->
+            <div class="p-4 bg-[#0d0d12] border-t border-cardBorder flex items-center justify-between gap-3">
+                <button id="modalShareBtn" class="border border-cardBorder hover:border-brandGold text-textMuted hover:text-brandGold text-xs font-medium px-3.5 py-2.5 rounded-xl transition flex items-center gap-2">
+                    <i class="fa-solid fa-share-nodes"></i>
+                    <span>แชร์กิจกรรม</span>
+                </button>
+                <div class="flex items-center gap-2">
+                    <button id="modalCloseActionBtn" class="bg-[#16161d] hover:bg-[#20202a] border border-cardBorder text-textMuted hover:text-white text-xs font-medium px-4 py-2.5 rounded-xl transition">
+                        ปิด
+                    </button>
+                    <button id="modalRegisterBtn" class="bg-gradient-to-r from-brandGoldLight via-brandGold to-brandGoldDark text-darkBg hover:brightness-110 text-xs font-black px-6 py-2.5 rounded-xl transition shadow-lg shadow-brandGold/20 flex items-center gap-1.5">
+                        <span>สมัครเลย!</span>
+                        <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toastNotification" class="fixed bottom-6 right-6 z-50 transform translate-y-16 opacity-0 pointer-events-none transition-all duration-300 bg-[#16161d] border border-brandGold/50 text-textLight text-xs py-3 px-4 rounded-xl shadow-2xl flex items-center gap-3">
+        <i class="fa-solid fa-circle-check text-brandGold text-base" id="toastIcon"></i>
+        <span id="toastMessage">คัดลอกลิงก์เรียบร้อยแล้ว!</span>
+    </div>
 
     <!-- App JavaScript -->
     <script src="app.js"></script>
